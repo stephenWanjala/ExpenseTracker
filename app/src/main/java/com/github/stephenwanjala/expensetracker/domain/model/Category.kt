@@ -1,0 +1,25 @@
+package com.github.stephenwanjala.expensetracker.domain.model
+
+enum class Category {
+    FOOD,
+    RENT,
+    UTILITIES,
+    TRAVEL,
+    OTHER,
+    INCOME,
+    FEE,
+    ENTERTAINMENT,
+    CLOTHING,
+    HEALTH,
+    EDUCATION,
+    GIFT,
+    CHARITY,
+    INVESTMENT,
+    TAX,
+    INSURANCE,
+    TRANSFER,
+    BUSINESS,
+    PERSONAL,
+    HOBBY,
+    SPORTS,
+}
