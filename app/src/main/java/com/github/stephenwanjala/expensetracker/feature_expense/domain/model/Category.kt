@@ -1,5 +1,4 @@
-package com.github.stephenwanjala.expensetracker.domain.model
-
+package com.github.stephenwanjala.expensetracker.feature_expense.domain.model
 enum class Category {
     FOOD,
     RENT,
@@ -23,3 +22,4 @@ enum class Category {
     HOBBY,
     SPORTS,
 }
+

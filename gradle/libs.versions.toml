@@ -3,6 +3,7 @@ agp = "8.3.0-alpha06"
 androidx-hiltCompiler = "1.0.0"
 coroutinesVersion = "1.7.1"
 destinationsVersion = "1.9.53"
+desugar_jdk_libs = "2.0.3"
 hiltCompiler = "2.48"
 hiltNavigationCompose = "1.0.0"
 kotlin = "1.9.10"
@@ -33,6 +34,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 destinations-animations-core = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "destinationsVersion" }
 destinations-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "destinationsVersion" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltCompiler" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltCompiler" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }

@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ExpenseTracker"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".feature_expense.presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.ExpenseTracker">
             <intent-filter>
