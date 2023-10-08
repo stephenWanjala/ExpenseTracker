@@ -1,6 +1,6 @@
 package com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase
 
 data class ExpenseScreenUseCase(
-    private val categorizedDailyExpense: GetCategorizedDailyExpense,
-    private val saveExpense: SaveExpense,
+    val categorizedDailyExpense: GetCategorizedDailyExpense,
+    val saveExpense: SaveExpense,
 )
