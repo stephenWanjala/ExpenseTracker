@@ -32,7 +32,7 @@ fun ExpenseTittle(
             style = MaterialTheme.typography.titleMedium
         )
         ExpenseEditText(
-            modifier=Modifier.fillMaxWidth(0.8f),
+            modifier=Modifier.fillMaxWidth(),
             placeHolder = "Enter Expense Tittle",
             onTextChange = {
                 onTextChangeEvent(AddEditExpenseEvent.EnteredTittle(it))

@@ -36,7 +36,7 @@ fun ExpenseAmount(
             style = MaterialTheme.typography.titleMedium
         )
         ExpenseEditText(
-            modifier = Modifier.fillMaxWidth(0.8f),
+            modifier = Modifier.fillMaxWidth(),
             placeHolder = "Expense Amount", text = amount, onTextChange = {
                 onTextChangeEvent(AddEditExpenseEvent.EnteredAmount(it.toDouble()))
             },

@@ -34,7 +34,7 @@ fun ExpenseDescription(
             style = MaterialTheme.typography.titleMedium
         )
         ExpenseEditText(
-            modifier = Modifier.fillMaxWidth(0.8f),
+            modifier = Modifier.fillMaxWidth(),
             placeHolder = "Expense Description",
             text = body,
             maxLines = 6,
