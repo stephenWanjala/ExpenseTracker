@@ -32,8 +32,9 @@ fun ExpenseCategories(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+
+        ) {
         Text(
             text = "Category",
             textAlign = TextAlign.Center,
@@ -44,8 +45,9 @@ fun ExpenseCategories(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
 
-            ) {
+        ) {
             Category.entries.forEach { category ->
                 CategoryChip(
                     category = category,

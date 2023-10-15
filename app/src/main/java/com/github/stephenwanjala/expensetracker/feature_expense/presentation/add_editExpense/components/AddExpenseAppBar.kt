@@ -31,5 +31,6 @@ fun AddExpenseAppBar(modifier: Modifier = Modifier, closePage: () -> Unit) {
             ) {
                 Icon(imageVector = Icons.Outlined.Close, contentDescription = "close")
             }
-        })
+        }
+    )
 }
