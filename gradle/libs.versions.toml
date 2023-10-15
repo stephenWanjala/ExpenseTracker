@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.0-alpha06"
+agp = "8.3.0-alpha07"
 androidx-hiltCompiler = "1.0.0"
 coroutinesVersion = "1.7.1"
 destinationsVersion = "1.9.53"
