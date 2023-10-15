@@ -7,7 +7,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,11 +16,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.DailyExpenseViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.TopBarOrder
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination(start = true)
 @Composable
 fun DayWeekSummaryExpenseScreen(
-    viewModel: DailyExpenseViewModel = hiltViewModel()
+    viewModel: DailyExpenseViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator
 ) {
     val state = viewModel.state.collectAsState()
     Scaffold(
@@ -31,7 +32,7 @@ fun DayWeekSummaryExpenseScreen(
                 onClick = { /*TODO*/ },
                 modifier = Modifier.padding(16.dp),
 
-            ) {
+                ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Add Expense"

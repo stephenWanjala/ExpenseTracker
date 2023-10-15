@@ -1,10 +1,10 @@
 [versions]
 agp = "8.3.0-alpha07"
 androidx-hiltCompiler = "1.0.0"
-coroutinesVersion = "1.7.1"
+coroutinesVersion = "1.7.3"
 destinationsVersion = "1.9.53"
 desugar_jdk_libs = "2.0.3"
-hiltCompiler = "2.48"
+hiltCompiler = "2.48.1"
 hiltNavigationCompose = "1.0.0"
 kotlin = "1.9.10"
 room-runtime = "2.5.2"
