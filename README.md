@@ -11,10 +11,10 @@ Minimally track Your daily expenses, categorize them, and analyze Your spending 
 
 Here are some screenshots of the Work in progress Expense Tracker app:
 
-| Screen Dark                                                                                      | Expenses List  Light                                                            | Add                                                                |
-|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| ![Categorized Expenses dark](app/src/main/res/raw/expenses_catgorized bydate&&category_dark.png) | ![Expenses List](app/src/main/res/raw/expenses_catgorized bydate&&category.png) | ![Category Breakdown](/app/src/main/res/raw/add_expense_light.png) |
-| ![add_expense_dark1](app/src/main/res/raw/add_expense_dark1.png)                                 | ![add_expense_dark](app/src/main/res/raw/add_expense_dark.png)                  | ![Add ExpenseLight](app/src/main/res/raw/oder_section_light.png)   |
+| Screen Dark                                                                     | Expenses List  Light                                                 | Add                                                                |
+|---------------------------------------------------------------------------------|----------------------------------------------------------------------|--------------------------------------------------------------------|
+| ![Categorized Expenses dark](app/src/main/res/raw/expenses_catgorized_dark.png) | ![Expenses List](app/src/main/res/raw/expenses_catgorizedbydate.png) | ![Category Breakdown](/app/src/main/res/raw/add_expense_light.png) |
+| ![add_expense_dark1](app/src/main/res/raw/add_expense_dark1.png)                | ![add_expense_dark](app/src/main/res/raw/add_expense_dark.png)       | ![Add ExpenseLight](app/src/main/res/raw/oder_section_light.png)   |
 
 ## To-Do Features
 
