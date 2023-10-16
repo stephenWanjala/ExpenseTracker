@@ -2,8 +2,7 @@ package com.github.stephenwanjala.expensetracker.feature_expense.presentation.ad
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseEntity
-import com.github.stephenwanjala.expensetracker.feature_expense.domain.repository.ExpenseRepository
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.SaveExpense
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditExpenseViewModel @Inject constructor(
-    private val repository: ExpenseRepository,
+    private val saveExpense: SaveExpense,
 ) : ViewModel() {
     private val _state = MutableStateFlow(AddEditEditExpenseState())
     val state = _state.stateIn(
@@ -40,9 +39,7 @@ class AddEditExpenseViewModel @Inject constructor(
         }
         _state.update {
             it.copy(
-                saveButtonEnabled = (
-                        state.value.amount.isNotBlank() && state.value.amount.isNotEmpty() && state.value.tittle.isNotEmpty() && state.value.tittle.isNotEmpty()
-                        )
+                saveButtonEnabled = (state.value.amount.isNotBlank() && state.value.amount.isNotEmpty() && state.value.tittle.isNotEmpty() && state.value.tittle.isNotEmpty())
             )
         }
     }
@@ -50,14 +47,13 @@ class AddEditExpenseViewModel @Inject constructor(
 
     private fun saveExpense() {
         viewModelScope.launch {
-            repository.insertExpense(
-                ExpenseEntity(
-                    title = state.value.tittle,
-                    category = state.value.category.name,
-                    amount = state.value.amount.toDouble(),
-                    description = state.value.description,
-                    date = System.currentTimeMillis()
-                )
+            saveExpense(
+                title = state.value.tittle,
+                category = state.value.category.name,
+                amount = state.value.amount.toDouble(),
+                description = state.value.description,
+                date = System.currentTimeMillis()
+
             )
         }
     }

@@ -20,11 +20,13 @@ class GetCategorizedDailyExpense(private val repository: ExpenseRepository) {
                     .groupBy { it.category }
                     .flatMap { (category, categoryExpenses) ->
                         categoryExpenses
-                            .groupBy { it.date }
-                            .map { (date, dateExpenses) ->
+                            .groupBy { it.date.toLocalDateTime().dayOfWeek.value }
+                            .map { (dayOfWeek, dateExpenses) ->
+                                val date =  dateExpenses.firstOrNull()?.date?.toLocalDateTime() ?: LocalDateTime.now()
                                 CategorizedDailyExpense(
                                     category = Category.valueOf(category),
-                                    date = date.toLocalDateTime(),
+                                    date = date,
+                                    dayOfWeek=dayOfWeek,
                                     amount = dateExpenses.sumOf { it.amount }
                                 )
                             }
@@ -65,4 +67,5 @@ data class CategorizedDailyExpense(
     val category: Category,
     val date: LocalDateTime,
     val amount: Double,
+    val dayOfWeek: Int,
 )

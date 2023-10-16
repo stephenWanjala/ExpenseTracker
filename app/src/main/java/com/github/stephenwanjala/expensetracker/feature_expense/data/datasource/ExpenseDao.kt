@@ -27,10 +27,10 @@ interface ExpenseDao {
     fun getExpensesForWeek(startDate: Long, endDate: Long): Flow<List<ExpenseSummary>>
 
 
-    @Query("SELECT * FROM ExpenseEntity WHERE category = :category AND date = :date")
+    @Query("SELECT * FROM ExpenseEntity WHERE category = :category AND date  = :date")
     fun getExpensesForCategoryAndDate(category: String, date: Long): Flow<List<ExpenseEntity>>
 
-    @Query("SELECT category, date, SUM(amount) AS totalAmount FROM ExpenseEntity GROUP BY category, date")
+    @Query("SELECT category, date, SUM(amount) AS totalAmount FROM ExpenseEntity GROUP BY category")
     fun getExpensesGroupedByCategoryAndDate(): Flow<List<ExpenseSummary>>
 
 }

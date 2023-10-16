@@ -11,15 +11,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DailyExpenseViewModel @Inject constructor(
-    private val expenseScreenUseCase: ExpenseScreenUseCase
+    private val expenseScreenUseCase: ExpenseScreenUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow(CategoryExpenseState())
     val state =
@@ -45,10 +46,12 @@ class DailyExpenseViewModel @Inject constructor(
     }
 
     private fun getExpenses(expenseOrder: ExpenseOrder) {
-        job?.cancel()
-        job = expenseScreenUseCase.categorizedDailyExpense(expenseOrder).onEach { expenses ->
-            _state.update { it.copy(expenses = expenses, order = expenseOrder) }
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+
+            expenseScreenUseCase.expenseSummary(expenseOrder).collectLatest { expenses ->
+                _state.update { it.copy(expenses = expenses, order = expenseOrder) }
+            }
+        }
 
     }
 
