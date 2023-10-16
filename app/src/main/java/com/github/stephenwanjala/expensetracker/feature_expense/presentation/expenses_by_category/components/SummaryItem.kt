@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseSummary
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.CategorizedDailyExpense
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.util.toLocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +62,50 @@ fun SummaryItem(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "KSH. ${expenseSummary.totalAmount}",
+                    textAlign = TextAlign.End,
+                )
+            }
+        }
+    }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SummaryItem(
+    modifier: Modifier = Modifier,
+    expenseCat: CategorizedDailyExpense,
+    onSummaryClick: (ExpenseSummary) -> Unit,
+) {
+    val expenseSummaryDate by remember {
+        mutableStateOf(expenseCat.date)
+    }
+    Card(
+        onClick = { /*TODO*/ },
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier=Modifier.weight(1f)) {
+                    Text(text = expenseCat.category.name, textAlign = TextAlign.Center)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "${expenseCat.date.dayOfWeek.name}, ${expenseSummaryDate.month.name} ${expenseSummaryDate.dayOfMonth}",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "KSH. ${expenseCat.amount}",
                     textAlign = TextAlign.End,
                 )
             }

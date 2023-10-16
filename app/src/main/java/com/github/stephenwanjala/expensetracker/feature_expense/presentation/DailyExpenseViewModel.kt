@@ -48,8 +48,11 @@ class DailyExpenseViewModel @Inject constructor(
     private fun getExpenses(expenseOrder: ExpenseOrder) {
         viewModelScope.launch {
 
-            expenseScreenUseCase.expenseSummary(expenseOrder).collectLatest { expenses ->
-                _state.update { it.copy(expenses = expenses, order = expenseOrder) }
+//            expenseScreenUseCase.expenseSummary(expenseOrder).collectLatest { expenses ->
+//                _state.update { it.copy(expenses = expenses, order = expenseOrder) }
+//            }
+            expenseScreenUseCase.categoryDailyExpense(expenseOrder).collectLatest { expenses ->
+                _state.update { it.copy(expensesCat = expenses, order = expenseOrder) }
             }
         }
 

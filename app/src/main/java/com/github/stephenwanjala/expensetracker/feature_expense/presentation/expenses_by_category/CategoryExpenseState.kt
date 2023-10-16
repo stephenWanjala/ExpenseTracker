@@ -8,5 +8,6 @@ import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.C
 data class CategoryExpenseState(
     val order: ExpenseOrder = ExpenseOrder.Date(OrderType.Descending),
     val expenses: List<ExpenseSummary> = emptyList(),
+    val expensesCat: List<CategorizedDailyExpense> = emptyList(),
     val orderSectionVisible: Boolean = false,
 )

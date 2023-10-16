@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseSummary
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.DailyExpenseViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.AddEditExpenseScreenDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.SummaryItem
@@ -64,7 +63,7 @@ fun DayWeekSummaryExpenseScreen(
                 expenseOrder = state.value.order
             )
             LazyColumn {
-                if (state.value.expenses.isEmpty()) {
+                if (state.value.expensesCat.isEmpty()) {
                     item {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
@@ -78,9 +77,12 @@ fun DayWeekSummaryExpenseScreen(
                     }
                 }
 
-                items(state.value.expenses) {item: ExpenseSummary ->
-                    SummaryItem(expenseSummary = item, onSummaryClick = {})
-
+//                items(state.value.expenses) {item: ExpenseSummary ->
+//                    SummaryItem(expenseSummary = item, onSummaryClick = {})
+//
+//                }
+                items(state.value.expensesCat) {
+                    SummaryItem(expenseCat = it, onSummaryClick = {})
                 }
             }
         }
