@@ -33,4 +33,7 @@ interface ExpenseDao {
     @Query("SELECT category, date, SUM(amount) AS totalAmount FROM ExpenseEntity GROUP BY category")
     fun getExpensesGroupedByCategoryAndDate(): Flow<List<ExpenseSummary>>
 
+
+
+
 }

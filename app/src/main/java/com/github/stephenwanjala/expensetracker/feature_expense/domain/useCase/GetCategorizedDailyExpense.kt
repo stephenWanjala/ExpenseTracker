@@ -1,5 +1,6 @@
 package com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase
 
+import android.os.Parcelable
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.ExpenseOrder
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.OrderType
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.model.Category
@@ -9,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
 class GetCategorizedDailyExpense(private val repository: ExpenseRepository) {
@@ -63,9 +65,10 @@ class GetCategorizedDailyExpense(private val repository: ExpenseRepository) {
 }
 
 
+@Parcelize
 data class CategorizedDailyExpense(
     val category: Category,
     val date: LocalDateTime,
     val amount: Double,
     val dayOfWeek: Int,
-)
+) : Parcelable
