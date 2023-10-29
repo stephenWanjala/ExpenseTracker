@@ -14,7 +14,7 @@ Here are some screenshots of the Work in progress Expense Tracker app:
 | Screen Dark                                                                     | Expenses List  Light                                                 | Add                                                                |
 |---------------------------------------------------------------------------------|----------------------------------------------------------------------|--------------------------------------------------------------------|
 | ![Categorized Expenses dark](app/src/main/res/raw/expenses_catgorized_dark.png) | ![Expenses List](app/src/main/res/raw/expenses_catgorizedbydate.png) | ![Category Breakdown](/app/src/main/res/raw/add_expense_light.png) |
-| ![add_expense_dark1](app/src/main/res/raw/add_expense_dark1.png)                | ![add_expense_dark](app/src/main/res/raw/add_expense_dark.png)       | ![Add ExpenseLight](app/src/main/res/raw/oder_section_light.png)   |
+| ![Expenses in A Category](app/src/main/res/raw/expenses_in_a_category.png)      | ![add_expense_dark](app/src/main/res/raw/add_expense_dark.png)       | ![Add ExpenseLight](app/src/main/res/raw/oder_section_light.png)   |
 
 ## To-Do Features
 
