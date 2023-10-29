@@ -9,6 +9,8 @@ import com.github.stephenwanjala.expensetracker.feature_expense.domain.repositor
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.ExpenseScreenUseCase
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetCategorizedDailyExpense
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetExpenseSummary
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetExpensesGivenDateAndCategory
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetExpensesOfADay
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.SaveExpense
 import dagger.Module
 import dagger.Provides
@@ -46,5 +48,16 @@ object AppModule {
     @Singleton
     fun providesSaveExpenseUseCase(repository: ExpenseRepository): SaveExpense =
         SaveExpense(repository)
+
+    @Provides
+    @Singleton
+    fun provideExpensesInACategoryOfAGivenDateUseCase(repository: ExpenseRepository): GetExpensesGivenDateAndCategory =
+        GetExpensesGivenDateAndCategory(repository)
+
+
+    @Provides
+    @Singleton
+    fun provideExpenseOfDayCatUseCase(repository: ExpenseRepository): GetExpensesOfADay =
+        GetExpensesOfADay(repository = repository)
 
 }

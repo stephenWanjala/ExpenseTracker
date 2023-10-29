@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseSummary
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.CategorizedDailyExpense
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.util.relativeTime
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.util.toLocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,8 +37,9 @@ fun SummaryItem(
     val expenseSummaryDate by remember {
         mutableStateOf(expenseSummary.date.toLocalDateTime())
     }
+
     Card(
-        onClick = { /*TODO*/ },
+        onClick = { onSummaryClick(expenseSummary) },
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
@@ -51,7 +53,7 @@ fun SummaryItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Column(modifier=Modifier.weight(1f)) {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(text = expenseSummary.category, textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -75,13 +77,11 @@ fun SummaryItem(
 fun SummaryItem(
     modifier: Modifier = Modifier,
     expenseCat: CategorizedDailyExpense,
-    onSummaryClick: (ExpenseSummary) -> Unit,
+    onSummaryClick: (CategorizedDailyExpense) -> Unit,
 ) {
-    val expenseSummaryDate by remember {
-        mutableStateOf(expenseCat.date)
-    }
+
     Card(
-        onClick = { /*TODO*/ },
+        onClick = { onSummaryClick(expenseCat) },
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
@@ -95,11 +95,11 @@ fun SummaryItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Column(modifier=Modifier.weight(1f)) {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(text = expenseCat.category.name, textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "${expenseCat.date.dayOfWeek.name}, ${expenseSummaryDate.month.name} ${expenseSummaryDate.dayOfMonth}",
+                        text = expenseCat.date.relativeTime(System.currentTimeMillis()),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }

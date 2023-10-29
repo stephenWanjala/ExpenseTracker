@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.DailyExpenseViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.AddEditExpenseScreenDestination
+import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.ExpensesDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.SummaryItem
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.TopBarOrder
 import com.ramcosta.composedestinations.annotation.Destination
@@ -76,13 +77,10 @@ fun DayWeekSummaryExpenseScreen(
                         }
                     }
                 }
-
-//                items(state.value.expenses) {item: ExpenseSummary ->
-//                    SummaryItem(expenseSummary = item, onSummaryClick = {})
-//
-//                }
-                items(state.value.expensesCat) {
-                    SummaryItem(expenseCat = it, onSummaryClick = {})
+                items(state.value.expensesCat) { categorizedDailyExpense ->
+                    SummaryItem(expenseCat = categorizedDailyExpense, onSummaryClick = {
+                        navigator.navigate(ExpensesDestination(expenseCat = it))
+                    })
                 }
             }
         }
