@@ -33,7 +33,6 @@ class ExpensesViewModel @Inject constructor(
                 getExpenses(
                     expenseCat = event.expenseCat
                 )
-//                println("Expenses -> ${_state.value.expenses}")
             }
 
             is ExpensesEvent.UpdateExpenseCat -> {
@@ -49,7 +48,6 @@ class ExpensesViewModel @Inject constructor(
                 _state.update { it.copy(expenses = expenses) }
             }
         }
-                println("Expenses:$ ${state.value}")
     }
 
 }
