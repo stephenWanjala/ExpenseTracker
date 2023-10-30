@@ -19,7 +19,7 @@ jobs:
         run: ./gradlew build
       - name: Build Release APK
         run: ./gradlew assembleRelease
-      - name: Releasing using Hub
+      - name: Release ApkK
         uses: ShaunLWM/action-release-debugapk@master
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
