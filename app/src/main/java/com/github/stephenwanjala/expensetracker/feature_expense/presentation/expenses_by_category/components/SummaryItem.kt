@@ -15,12 +15,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.CategorizedDailyExpense
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.util.relativeTime
+import kotlinx.coroutines.delay
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +36,15 @@ fun SummaryItem(
     expenseCat: CategorizedDailyExpense,
     onSummaryClick: (CategorizedDailyExpense) -> Unit,
 ) {
-
+    var currentTime by remember {
+        mutableLongStateOf(System.currentTimeMillis())
+    }
+    LaunchedEffect(currentTime) {
+        while (true) {
+            delay(1000) // Update time every second
+            currentTime = System.currentTimeMillis()
+        }
+    }
     Card(
         onClick = { onSummaryClick(expenseCat) },
         modifier = modifier
@@ -50,7 +64,7 @@ fun SummaryItem(
                     Text(text = expenseCat.category.name, textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = expenseCat.date.relativeTime(System.currentTimeMillis()),
+                        text = expenseCat.date.relativeTime(currentTime),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
