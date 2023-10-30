@@ -1,8 +1,9 @@
 name: Build & Publish Release APK
 on:
   push:
-    branches:
-      - master
+    branches: ["master"]
+  pull_request:
+    branches: [ "master" ]
 jobs:
   build:
     runs-on: ubuntu-latest
