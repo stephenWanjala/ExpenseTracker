@@ -1,27 +1,26 @@
 name: Build & Publish Release APK
+
 on:
   push:
-    branches: ["master"]
-  pull_request:
-    branches: [ "master" ]
+    tags:
+      - '*'
+
 jobs:
-  build:
+  Gradle:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: set up JDK 17
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: setup jdk
         uses: actions/setup-java@v1
         with:
           java-version: 17
       - name: Make Gradle executable
         run: chmod +x ./gradlew
-      - name: Build with Gradle
-        run: ./gradlew build
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
       - name: Releasing using Hub
-        uses: alsrb968/action-release-apk@1.0.0
-        with:
+        uses: kyze8439690/action-release-releaseapk@master
+        env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
           APP_FOLDER: app
-          RELEASE_TITLE: New Build
