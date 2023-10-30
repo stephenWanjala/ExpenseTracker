@@ -20,8 +20,8 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew assembleDebug
       - name: Releasing using Hub
-        uses: ShaunLWM/action-release-debugapk@master
-        env:
+        uses: alsrb968/action-release-apk@1.0.0
+        with:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
           APP_FOLDER: app
           RELEASE_TITLE: New Build
