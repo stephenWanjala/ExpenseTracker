@@ -100,3 +100,11 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
 }
+
+tasks {
+    register("printVersionName") {
+        doLast {
+            println(project.version)
+        }
+    }
+}
