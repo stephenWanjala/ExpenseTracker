@@ -102,9 +102,9 @@ dependencies {
 }
 
 tasks {
-    register("printVersionName") {
+    register("getVersionName") {
         doLast {
-            println(project.version)
+            println(android.defaultConfig.versionName)
         }
     }
 }
