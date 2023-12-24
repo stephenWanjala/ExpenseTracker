@@ -8,11 +8,9 @@ import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.E
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.CategoryExpenseState
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.ExpenseEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,7 +23,6 @@ class DailyExpenseViewModel @Inject constructor(
     private val _state = MutableStateFlow(CategoryExpenseState())
     val state =
         _state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(500), CategoryExpenseState())
-    private var job: Job? = null
 
     init {
         getExpenses(ExpenseOrder.Date(OrderType.Descending))
@@ -48,9 +45,6 @@ class DailyExpenseViewModel @Inject constructor(
     private fun getExpenses(expenseOrder: ExpenseOrder) {
         viewModelScope.launch {
 
-//            expenseScreenUseCase.expenseSummary(expenseOrder).collectLatest { expenses ->
-//                _state.update { it.copy(expenses = expenses, order = expenseOrder) }
-//            }
             expenseScreenUseCase.categoryDailyExpense(expenseOrder).collectLatest { expenses ->
                 _state.update { it.copy(expensesCat = expenses, order = expenseOrder) }
             }
