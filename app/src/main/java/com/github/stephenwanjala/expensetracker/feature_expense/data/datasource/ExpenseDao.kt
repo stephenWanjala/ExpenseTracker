@@ -7,6 +7,7 @@ import androidx.room.Upsert
 import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseEntity
 import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseSummary
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDateTime
 
 @Dao
 interface ExpenseDao {
@@ -34,6 +35,13 @@ interface ExpenseDao {
     fun getExpensesGroupedByCategoryAndDate(): Flow<List<ExpenseSummary>>
 
 
+    @Query("SELECT SUM(amount) FROM ExpenseEntity WHERE date >= :startOfDay AND date <= :endOfDay")
+    suspend fun getTotalAmountSpentToday(startOfDay: LocalDateTime, endOfDay: LocalDateTime): Double
 
+    @Query("SELECT SUM(amount) FROM ExpenseEntity WHERE date >= :startOfWeek AND date <= :endOfWeek")
+    suspend fun getTotalAmountSpentThisWeek(startOfWeek: LocalDateTime, endOfWeek: LocalDateTime): Double
+
+    @Query("SELECT SUM(amount) FROM ExpenseEntity WHERE date >= :startOfMonth AND date <= :endOfMonth")
+    suspend fun getTotalAmountSpentThisMonth(startOfMonth: LocalDateTime, endOfMonth: LocalDateTime): Double
 
 }

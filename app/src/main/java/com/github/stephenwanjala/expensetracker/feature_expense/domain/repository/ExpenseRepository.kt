@@ -16,4 +16,7 @@ interface ExpenseRepository {
     fun getExpensesForCategoryAndDate(category: String, date: Long): Flow<List<ExpenseEntity>>
 
     fun getExpensesGroupedByCategoryAndDate(): Flow<List<ExpenseSummary>>
+    suspend fun getTotalAmountSpentThisWeek(): Double
+    suspend fun getTotalAmountSpentThisMonth(): Double
+    suspend fun getTotalAmountSpentToday(): Double
 }

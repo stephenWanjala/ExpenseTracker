@@ -8,6 +8,7 @@ import com.github.stephenwanjala.expensetracker.feature_expense.data.repositoryI
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.repository.ExpenseRepository
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.ExpenseScreenUseCase
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetCategorizedDailyExpense
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetExpenseStats
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetExpenseSummary
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetExpensesGivenDateAndCategory
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetExpensesOfADay
@@ -41,7 +42,8 @@ object AppModule {
     fun provideExpenseScreenUseCase(repository: ExpenseRepository) = ExpenseScreenUseCase(
         expenseSummary = GetExpenseSummary(repository),
         saveExpense = SaveExpense(repository),
-        categoryDailyExpense = GetCategorizedDailyExpense(repository)
+        categoryDailyExpense = GetCategorizedDailyExpense(repository),
+        expenseStats = GetExpenseStats(repository)
     )
 
     @Provides
@@ -59,5 +61,9 @@ object AppModule {
     @Singleton
     fun provideExpenseOfDayCatUseCase(repository: ExpenseRepository): GetExpensesOfADay =
         GetExpensesOfADay(repository = repository)
+
+    @Provides
+    @Singleton
+    fun provideGetExpenseStatsUseCase(repository: ExpenseRepository) = GetExpenseStats(repository = repository)
 
 }

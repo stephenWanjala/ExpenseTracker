@@ -101,7 +101,10 @@ fun Expenses(
                 }
                 Spacer(modifier = Modifier.height(6.dp))
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    items(state.expenses) {
+                    items(state.expenses,
+                        key = {expense->
+                            expense.id
+                        }) {
                         ExpenseItem(onExpenseItemClick = {}, expense = it)
                     }
                 }

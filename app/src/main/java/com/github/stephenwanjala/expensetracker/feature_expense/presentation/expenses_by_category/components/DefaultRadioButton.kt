@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
         verticalAlignment = Alignment.CenterVertically
     ) {
         RadioButton(
-            selected = selected, onClick = { onSelected() },
+            selected = selected, onClick = onSelected,
         )
         Spacer(modifier = modifier.height(8.dp))
         Text(text = text, style = MaterialTheme.typography.bodySmall)

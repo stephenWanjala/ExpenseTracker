@@ -25,7 +25,9 @@ jobs:
         run: bash ./gradlew assembleDebug --stacktrace
       - name: Export Version Name
         id: export_version_name
-        run: echo "::set-output name=version_name::$(./gradlew -q getVersionName)"
+        run: |
+          ./gradlew getVersionName
+             echo "::set-output name=version_name::$(cat app/build/versionName.txt)"
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:

@@ -17,9 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.github.stephenwanjala.expensetracker.R
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.DailyExpenseViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.AddEditExpenseScreenDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.ExpensesDestination
@@ -47,7 +49,7 @@ fun DayWeekSummaryExpenseScreen(
                 ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Expense"
+                    contentDescription = stringResource(R.string.add_expense)
                 )
             }
         }
@@ -71,7 +73,7 @@ fun DayWeekSummaryExpenseScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "No Expenses Recorded Yet",
+                                text = stringResource(R.string.no_expenses_recorded_yet),
                                 textAlign = TextAlign.Center,
                             )
                         }

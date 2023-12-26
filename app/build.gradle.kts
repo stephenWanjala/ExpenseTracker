@@ -100,11 +100,3 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
 }
-
-tasks {
-    register("getVersionName") {
-        doLast {
-            println(android.defaultConfig.versionName)
-        }
-    }
-}

@@ -5,6 +5,8 @@ import com.github.stephenwanjala.expensetracker.feature_expense.data.model.Expen
 import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseSummary
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.repository.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDateTime
+import java.time.YearMonth
 import javax.inject.Inject
 
 class ExpenseRepositoryImpl @Inject constructor(
@@ -32,6 +34,24 @@ class ExpenseRepositoryImpl @Inject constructor(
 
     override fun getExpensesGroupedByCategoryAndDate(): Flow<List<ExpenseSummary>> =
         dao.getExpensesGroupedByCategoryAndDate()
+
+    override suspend fun getTotalAmountSpentToday(): Double {
+        val startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0)
+        val endOfDay = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59)
+        return dao.getTotalAmountSpentToday(startOfDay, endOfDay)
+    }
+
+    override suspend fun getTotalAmountSpentThisWeek(): Double {
+        val startOfWeek = LocalDateTime.now().with(java.time.DayOfWeek.MONDAY).withHour(0).withMinute(0).withSecond(0)
+        val endOfWeek = LocalDateTime.now().with(java.time.DayOfWeek.SUNDAY).withHour(23).withMinute(59).withSecond(59)
+        return dao.getTotalAmountSpentThisWeek(startOfWeek, endOfWeek)
+    }
+
+    override suspend fun getTotalAmountSpentThisMonth(): Double {
+        val startOfMonth = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0)
+        val endOfMonth = LocalDateTime.now().withDayOfMonth(YearMonth.from(startOfMonth).lengthOfMonth()).withHour(23).withMinute(59).withSecond(59)
+        return dao.getTotalAmountSpentThisMonth(startOfMonth, endOfMonth)
+    }
 
 
 }
