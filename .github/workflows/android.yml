@@ -24,8 +24,12 @@ jobs:
       - name: Build APK
         run: bash ./gradlew assembleDebug --stacktrace
       - name: Export Version Name
-        id: export_version_name
-        run: echo "::set-output name=version_name::$(./gradlew -q getVersionName)"
+        run: echo "$(./gradlew -q getVersionName)" > version.txt
+      - name: Upload Version Name
+        uses: actions/upload-artifact@v4
+        with:
+          name: version
+          path: version.txt
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
@@ -41,14 +45,21 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: apk
+      - name: Download Version Name
+        uses: actions/download-artifact@v4
+        with:
+          name: version
+      - name: Set Version Name
+        id: version
+        run: echo "::set-output name=version_name::$(cat version.txt)"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
-          tag_name: ${{ steps.apk.outputs.version_name }}
-          release_name: ${{ github.event.repository.name }} v${{ steps.apk.outputs.version_name }}
+          tag_name: ${{ steps.version.outputs.version_name }}
+          release_name: ${{ github.event.repository.name }} v${{ steps.version.outputs.version_name }}
       - name: Upload Release APK
         id: upload_release_asset
         uses: actions/upload-release-asset@v1.0.2
@@ -57,5 +68,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: apk/app-debug.apk
-          asset_name: ${{ github.event.repository.name }}-${{ steps.apk.outputs.version_name }}.apk
+          asset_name: ${{ github.event.repository.name }}-${{ steps.version.outputs.version_name }}.apk
           asset_content_type: application/zip
