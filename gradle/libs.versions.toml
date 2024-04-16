@@ -2,7 +2,7 @@
 agp = "8.3.2"
 androidx-hiltCompiler = "1.2.0"
 coroutinesVersion = "1.8.0"
-destinationsVersion = "1.9.53"
+destinationsVersion = "1.10.2"
 desugar_jdk_libs = "2.0.4"
 hiltCompiler = "2.51.1"
 hiltNavigationCompose = "1.1.0"
