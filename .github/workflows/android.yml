@@ -1,67 +1,58 @@
 name: Build and Release
 
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - "v*"
+ push:
+   branches:
+     - master
+   tags:
+     - "v*"
 
 jobs:
-  build_and_release:
-    name: Build and Release APK
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: 1.8
-      - name: Set execution flag for gradlew
-        run: chmod +x gradlew
-      - name: Build APK
-        run: bash ./gradlew assembleDebug --stacktrace
-      - name: Export Version Name
-        run: echo "$(./gradlew -q getVersionName)" > version.txt
-      - name: Upload Version Name
-        uses: actions/upload-artifact@v4
-        with:
-          name: version
-          path: version.txt
-      - name: Upload APK to Github Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: app
-          path: app/build/outputs/apk/debug/app-debug.apk
-      - name: Download APK from build
-        uses: actions/download-artifact@v4
-        with:
-          name: app
-      - name: Download Version Name
-        uses: actions/download-artifact@v4
-        with:
-          name: version
-      - name: Set Version Name
-        id: version
-        run: echo "::set-output name=version_name::$(cat version.txt)"
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        with:
-          tag_name: ${{ steps.version.outputs.version_name }}
-          release_name: ${{ github.event.repository.name }}-${{ steps.version.outputs.version_name }}.apk
-          draft: false
-          prerelease: false
-      - name: Upload APK to Release
-        id: upload_release_asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./app-debug.apk
-          asset_name: ${{ github.event.repository.name }}-${{ steps.version.outputs.version_name }}.apk
-          asset_content_type: application/zip
+ apk:
+   name: Generate APK
+   runs-on: ubuntu-latest
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v2.4.0
+     - name: Setup JDK
+       uses: actions/setup-java@v2.5.0
+       with:
+         distribution: temurin
+         java-version: "17"
+     - name: Set execution flag for gradlew
+       run: chmod +x gradlew
+     - name: Build APK
+       run: bash ./gradlew assembleDebug --stacktrace
+     - name: Upload APK
+       uses: actions/upload-artifact@v1
+       with:
+         name: apk
+         path: app/build/outputs/apk/debug/app-debug.apk
+
+ release:
+   name: Release APK
+   needs: apk
+   runs-on: ubuntu-latest
+   steps:
+     - name: Download APK from build
+       uses: actions/download-artifact@v1
+       with:
+         name: apk
+     - name: Create Release
+       id: create_release
+       uses: actions/create-release@v1
+       env:
+         GITHUB_TOKEN: ${{ secrets.TOKEN }}
+       with:
+         tag_name: ${{ github.run_number }}
+         release_name: ${{ github.event.repository.name }} v${{ github.run_number }}
+     - name: Upload Release APK
+       id: upload_release_asset
+       uses: actions/upload-release-asset@v1.0.1
+       env:
+         GITHUB_TOKEN: ${{ secrets.TOKEN }}
+       with:
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: apk/app-debug.apk
+         asset_name: ${{ github.event.repository.name }}.apk
+         asset_content_type: application/zip
