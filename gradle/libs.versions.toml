@@ -1,7 +1,7 @@
 [versions]
 agp = "8.3.2"
 androidx-hiltCompiler = "1.2.0"
-coroutinesVersion = "1.7.3"
+coroutinesVersion = "1.8.0"
 destinationsVersion = "1.9.53"
 desugar_jdk_libs = "2.0.4"
 hiltCompiler = "2.49"
