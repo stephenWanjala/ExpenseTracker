@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,7 +44,7 @@ fun TopBarOrder(
         IconButton(onClick = {
             onToggleOrderEvent(ExpenseEvent.ToggleOrderSection)
         }) {
-            Icon(imageVector = Icons.Default.Sort, contentDescription = "Icon Sort")
+            Icon(imageVector = Icons.AutoMirrored.Filled.Sort, contentDescription = "Icon Sort")
         }
     }
     AnimatedVisibility(
