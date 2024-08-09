@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.1"
+agp = "8.5.2"
 androidx-hiltCompiler = "1.2.0"
 coroutinesVersion = "1.8.1"
 destinationsVersion = "1.10.2"
