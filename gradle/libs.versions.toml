@@ -16,7 +16,7 @@ espresso-core = "3.6.1"
 lifecycle-runtime-ktx = "2.8.5"
 activity-compose = "1.9.2"
 compose-bom = "2024.09.01"
-materialIconsCore = "1.7.0"
+materialIconsCore = "1.7.1"
 navVersion = "2.8.0"
 
 
