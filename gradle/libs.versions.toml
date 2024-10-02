@@ -17,7 +17,7 @@ lifecycle-runtime-ktx = "2.8.6"
 activity-compose = "1.9.2"
 compose-bom = "2024.09.02"
 materialIconsCore = "1.7.2"
-navVersion = "2.8.1"
+navVersion = "2.8.2"
 
 
 [libraries]
