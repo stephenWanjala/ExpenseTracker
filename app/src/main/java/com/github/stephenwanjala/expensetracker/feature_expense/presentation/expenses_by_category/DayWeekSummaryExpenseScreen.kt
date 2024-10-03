@@ -42,19 +42,6 @@ fun DayWeekSummaryExpenseScreen(
     state.value.categories.firstOrNull { it.name == state.value.selectedCategory }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        floatingActionButton = {
-//            FloatingActionButton(
-//                onClick = {
-//                    navigator.navigate(AddEditExpenseScreenDestination)
-//                },
-//                modifier = Modifier.navigationBarsPadding()
-//            ) {
-//                Icon(
-//                    imageVector = Icons.Default.Add,
-//                    contentDescription = "Add Expense"
-//                )
-//            }
-        },
         topBar = {
             TopBarOrder(
                 onToggleOrderEvent = viewModel::onEvent,
@@ -71,9 +58,6 @@ fun DayWeekSummaryExpenseScreen(
         ) {
 
             LazyColumn {
-//                item {
-//
-//                }
                 if (state.value.expensesCat.isEmpty()) {
                     item {
                         Box(

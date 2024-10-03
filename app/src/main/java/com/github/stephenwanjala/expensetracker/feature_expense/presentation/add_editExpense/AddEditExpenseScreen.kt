@@ -39,7 +39,7 @@ fun AddEditExpenseScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(paddingValues = paddingValues)
-                .statusBarsPadding()
+//                .statusBarsPadding()
                 .verticalScroll(state = rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {

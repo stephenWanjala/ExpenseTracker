@@ -12,14 +12,12 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.navigation.rememberBottomSheetNavigator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -97,14 +95,15 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {
                             AnimatedVisibility(visible = showBottomBar) {
-                                BottomBar(navController = navController, items = bottomBarItems,)
+                                BottomBar(navController = navController, items = bottomBarItems)
                             }
                         },
                         floatingActionButton = {
                             if (currentDestination?.route == DayWeekSummaryExpenseScreenDestination.route) {
                                 FloatingActionButton(
                                     onClick = {
-                                        navController.toDestinationsNavigator().navigate(AddEditExpenseScreenDestination)
+                                        navController.toDestinationsNavigator()
+                                            .navigate(AddEditExpenseScreenDestination)
                                     },
                                     modifier = Modifier.navigationBarsPadding()
                                 ) {
