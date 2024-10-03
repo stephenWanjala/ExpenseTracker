@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ExpenseTracker</string>
+    <string name="graph">Chart</string>
+    <string name="home">Expenses</string>
 </resources>

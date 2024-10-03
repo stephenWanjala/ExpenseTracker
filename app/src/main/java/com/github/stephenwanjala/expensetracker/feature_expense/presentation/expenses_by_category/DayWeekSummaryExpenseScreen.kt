@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,27 +21,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.stephenwanjala.expensetracker.feature_expense.domain.model.Category
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.DailyExpenseViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.AddEditExpenseScreenDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.ExpensesDestination
-import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.MonthlyCategoryExpenditure
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.SummaryItem
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.TopBarOrder
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RootNavGraph(start = true)
-@Destination
+//@RootNavGraph()
+@Destination(start = true)
 @Composable
 fun DayWeekSummaryExpenseScreen(
     viewModel: DailyExpenseViewModel = hiltViewModel(),
     navigator: DestinationsNavigator,
 ) {
     val state = viewModel.state.collectAsState()
-    val preselectedCategory: Category? = state.value.categories.firstOrNull { it.name == state.value.selectedCategory }
+    state.value.categories.firstOrNull { it.name == state.value.selectedCategory }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
@@ -77,28 +73,7 @@ fun DayWeekSummaryExpenseScreen(
         ) {
 
             LazyColumn(contentPadding = paddingValues) {
-                item{
-                    Text(
-                        text = "Monthly Expenses",
-                        modifier = Modifier.padding(6.dp),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                    MonthlyCategoryExpenditure(
-                        modifier = Modifier.padding(8.dp),
-                        categories = state.value.categories,
-                        expenses = state.value.monthlyExpenses,
-                        preselectedCategory= preselectedCategory,
-                        onCategorySelected = { category ->
-                            viewModel.onEvent(ExpenseEvent.SelectCategory(category.name))
-                        },
-                        onDateSelected = { year, month, dayOfMonth ->
-                            viewModel.onEvent(ExpenseEvent.SelectDate(year, month, dayOfMonth))
-                        },
-                        defaultSelectedDate = state.value.selectedDate
-                    )
-                }
-                item{
+                item {
                     TopBarOrder(
                         onToggleOrderEvent = viewModel::onEvent,
                         onExpenseOrderChangeEvent = viewModel::onEvent,
