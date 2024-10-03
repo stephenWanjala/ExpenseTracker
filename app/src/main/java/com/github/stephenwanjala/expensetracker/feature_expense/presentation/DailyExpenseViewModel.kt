@@ -112,7 +112,8 @@ class DailyExpenseViewModel @Inject constructor(
     in that category and date (month and year) and update the state.monthlyExpenses state */
     private fun filterMonthlyExpenses(date: LocalDate, category: String) {
         val monthlyExpenses = _state.value.expenses.filter {
-            date == it.date.toLocalDate() &&
+            date.year == it.date.toLocalDate().year &&
+            date.month == it.date.toLocalDate().month &&
                     it.category.name == category
         }
         _state.update { it.copy(monthlyExpenses = monthlyExpenses) }
