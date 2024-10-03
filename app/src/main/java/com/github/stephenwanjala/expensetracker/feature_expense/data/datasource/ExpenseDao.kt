@@ -33,7 +33,18 @@ interface ExpenseDao {
     @Query("SELECT category, date, SUM(amount) AS totalAmount FROM ExpenseEntity GROUP BY category")
     fun getExpensesGroupedByCategoryAndDate(): Flow<List<ExpenseSummary>>
 
+    /*    get expenses for each category for the month of the year
+    say what was spent on food on June 2024
+     */
+    @Query("SELECT category, date, SUM(amount) AS totalAmount FROM ExpenseEntity WHERE date >= :startDate AND date <= :endDate GROUP BY category")
+    fun getExpensesGroupedByCategoryAndDate(
+        startDate: Long,
+        endDate: Long
+    ): Flow<List<ExpenseSummary>>
 
+//    list all categories
+    @Query("SELECT DISTINCT category FROM ExpenseEntity")
+    fun getAllCategories(): Flow<List<String>>
 
 
 }

@@ -7,6 +7,7 @@ import com.github.stephenwanjala.expensetracker.feature_expense.data.datasource.
 import com.github.stephenwanjala.expensetracker.feature_expense.data.repositoryImpl.ExpenseRepositoryImpl
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.repository.ExpenseRepository
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.ExpenseScreenUseCase
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetAllCategoriesUseCase
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetCategorizedDailyExpense
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetExpenseSummary
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.GetExpensesGivenDateAndCategory
@@ -41,7 +42,8 @@ object AppModule {
     fun provideExpenseScreenUseCase(repository: ExpenseRepository) = ExpenseScreenUseCase(
         expenseSummary = GetExpenseSummary(repository),
         saveExpense = SaveExpense(repository),
-        categoryDailyExpense = GetCategorizedDailyExpense(repository)
+        categoryDailyExpense = GetCategorizedDailyExpense(repository),
+        getCategories = GetAllCategoriesUseCase(repository)
     )
 
     @Provides

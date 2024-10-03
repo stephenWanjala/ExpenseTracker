@@ -3,8 +3,10 @@ package com.github.stephenwanjala.expensetracker.feature_expense.data.repository
 import com.github.stephenwanjala.expensetracker.feature_expense.data.datasource.ExpenseDao
 import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseEntity
 import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseSummary
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.model.Category
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.repository.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ExpenseRepositoryImpl @Inject constructor(
@@ -32,6 +34,13 @@ class ExpenseRepositoryImpl @Inject constructor(
 
     override fun getExpensesGroupedByCategoryAndDate(): Flow<List<ExpenseSummary>> =
         dao.getExpensesGroupedByCategoryAndDate()
+
+    override fun getAllCategories(): Flow<List<Category>> {
+        return dao.getAllCategories()
+            .map { list ->
+                list.map { Category.valueOf(it) }
+            }
+    }
 
 
 }

@@ -2,6 +2,7 @@ package com.github.stephenwanjala.expensetracker.feature_expense.domain.reposito
 
 import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseEntity
 import com.github.stephenwanjala.expensetracker.feature_expense.data.model.ExpenseSummary
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.model.Category
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseRepository {
@@ -16,4 +17,5 @@ interface ExpenseRepository {
     fun getExpensesForCategoryAndDate(category: String, date: Long): Flow<List<ExpenseEntity>>
 
     fun getExpensesGroupedByCategoryAndDate(): Flow<List<ExpenseSummary>>
+    fun getAllCategories(): Flow<List<Category>>
 }

@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.github.stephenwanjala.expensetracker"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.github.stephenwanjala.expensetracker"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
 
@@ -52,7 +52,6 @@ android {
     }
 }
 composeCompiler {
-    enableStrongSkippingMode = true
 
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
 

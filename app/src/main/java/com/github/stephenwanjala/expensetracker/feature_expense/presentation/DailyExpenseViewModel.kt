@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +27,7 @@ class DailyExpenseViewModel @Inject constructor(
 
     init {
         getExpenses(ExpenseOrder.Date(OrderType.Descending))
+        getCategories()
     }
 
     fun onEvent(event: ExpenseEvent) {
@@ -39,6 +41,16 @@ class DailyExpenseViewModel @Inject constructor(
             }
 
             is ExpenseEvent.ToggleOrderSection -> _state.update { it.copy(orderSectionVisible = !it.orderSectionVisible) }
+            is ExpenseEvent.SelectCategory -> _state.update { it.copy(selectedCategory = event.category) }
+            is ExpenseEvent.SelectDate -> _state.update {
+                it.copy(
+                    selectedDate = LocalDate.of(
+                        event.year,
+                        event.month + 1,
+                        event.dayOfMonth
+                    )
+                )
+            }
         }
     }
 
@@ -50,6 +62,17 @@ class DailyExpenseViewModel @Inject constructor(
             }
         }
 
+    }
+
+    private fun getCategories() {
+        viewModelScope.launch {
+            expenseScreenUseCase.getCategories().collectLatest { categories ->
+                _state.update { it.copy(categories = categories) }
+                if (categories.isNotEmpty()) {
+                    _state.update { it.copy(selectedCategory = categories[0].name) }
+                }
+            }
+        }
     }
 
 }
