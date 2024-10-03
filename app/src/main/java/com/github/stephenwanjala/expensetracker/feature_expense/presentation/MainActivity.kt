@@ -11,13 +11,16 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.navigation.rememberBottomSheetNavigator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -34,9 +37,9 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.stephenwanjala.expensetracker.R
+import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.AddEditExpenseScreenDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.ChartScreenDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.DayWeekSummaryExpenseScreenDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.Destination
@@ -68,7 +71,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val bottomSheetNavigator = rememberBottomSheetNavigator()
                     val navHostEngine = rememberAnimatedNavHostEngine(
                         navHostContentAlignment = Alignment.TopCenter,
                         rootDefaultAnimations = RootNavGraphDefaultAnimations(
@@ -95,7 +97,22 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {
                             AnimatedVisibility(visible = showBottomBar) {
-                                BottomBar(navController = navController, items = bottomBarItems)
+                                BottomBar(navController = navController, items = bottomBarItems,)
+                            }
+                        },
+                        floatingActionButton = {
+                            if (currentDestination?.route == DayWeekSummaryExpenseScreenDestination.route) {
+                                FloatingActionButton(
+                                    onClick = {
+                                        navController.toDestinationsNavigator().navigate(AddEditExpenseScreenDestination)
+                                    },
+                                    modifier = Modifier.navigationBarsPadding()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = "Add Expense"
+                                    )
+                                }
                             }
                         }
                     ) { paddingValues ->
@@ -103,7 +120,7 @@ class MainActivity : ComponentActivity() {
                             navGraph = NavGraphs.root,
                             navController = navController,
                             engine = navHostEngine,
-                            modifier = Modifier.padding(paddingValues),
+//                            modifier = Modifier.padding(paddingValues),
                         )
 
 
@@ -146,7 +163,7 @@ fun BottomBar(
 ) {
     val currentDestination: Destination = navController.appCurrentDestinationAsState().value
         ?: NavGraphs.root.startAppDestination
-val destinationsNavigator: DestinationsNavigator =navController.toDestinationsNavigator()
+    val destinationsNavigator: DestinationsNavigator = navController.toDestinationsNavigator()
     NavigationBar {
         items.forEach { destination ->
             NavigationBarItem(

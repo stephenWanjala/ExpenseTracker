@@ -8,6 +8,8 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 .idea
+*.log
+.kotlin
 .DS_Store
 /build
 /captures

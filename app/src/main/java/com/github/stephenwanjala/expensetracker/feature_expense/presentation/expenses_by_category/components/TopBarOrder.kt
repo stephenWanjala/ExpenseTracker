@@ -6,9 +6,12 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material3.Icon
@@ -27,36 +30,43 @@ import com.github.stephenwanjala.expensetracker.feature_expense.presentation.exp
 fun TopBarOrder(
     modifier: Modifier = Modifier,
     expenseOrder: ExpenseOrder = ExpenseOrder.Date(OrderType.Descending),
-    orderSectionVisible: Boolean= false,
-    onToggleOrderEvent: (ExpenseEvent)-> Unit,
+    orderSectionVisible: Boolean = false,
+    onToggleOrderEvent: (ExpenseEvent) -> Unit,
     onExpenseOrderChangeEvent: (ExpenseEvent) -> Unit,
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth().padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-
-        ) {
-        Text(
-            text = "Daily Expenses",
-            style = MaterialTheme.typography.headlineSmall
-        )
-        IconButton(onClick = {
-            onToggleOrderEvent(ExpenseEvent.ToggleOrderSection)
-        }) {
-            Icon(imageVector = Icons.AutoMirrored.Filled.Sort, contentDescription = "Icon Sort")
-        }
-    }
-    AnimatedVisibility(
-        visible = orderSectionVisible,
-        enter = fadeIn() + slideInVertically(),
-        exit = fadeOut() + slideOutVertically()
+    Column(
+        modifier = modifier
     ) {
-        OrderSection(
-            expenseOrder =expenseOrder,
-            onExpenseOrderChange = {
-                onExpenseOrderChangeEvent(ExpenseEvent.Order(it))
-            },
-        )
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .statusBarsPadding(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+
+            ) {
+            Text(
+                text = "Daily Expenses",
+                style = MaterialTheme.typography.headlineSmall
+            )
+            IconButton(onClick = {
+                onToggleOrderEvent(ExpenseEvent.ToggleOrderSection)
+            }) {
+                Icon(imageVector = Icons.AutoMirrored.Filled.Sort, contentDescription = "Icon Sort")
+            }
+        }
+        AnimatedVisibility(
+            visible = orderSectionVisible,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically(),
+            modifier = modifier.statusBarsPadding()
+        ) {
+            OrderSection(
+                expenseOrder = expenseOrder,
+                onExpenseOrderChange = {
+                    onExpenseOrderChangeEvent(ExpenseEvent.Order(it))
+                },
+            )
+        }
     }
 }

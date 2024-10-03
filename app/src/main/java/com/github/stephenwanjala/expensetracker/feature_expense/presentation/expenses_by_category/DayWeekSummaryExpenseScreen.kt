@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.DailyExpenseViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.AddEditExpenseScreenDestination
@@ -43,45 +43,37 @@ fun DayWeekSummaryExpenseScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navigator.navigate(AddEditExpenseScreenDestination)
-                },
-                modifier = Modifier.padding(16.dp),
-
-                ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add Expense"
-                )
-            }
+//            FloatingActionButton(
+//                onClick = {
+//                    navigator.navigate(AddEditExpenseScreenDestination)
+//                },
+//                modifier = Modifier.navigationBarsPadding()
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Default.Add,
+//                    contentDescription = "Add Expense"
+//                )
+//            }
         },
         topBar = {
-//            CenterAlignedTopAppBar(
-//                title = {
-//                    Text(
-//                        text = "Expenses",
-//                        style = MaterialTheme.typography.headlineSmall
-//                    )
-//                },
-//            )
+            TopBarOrder(
+                onToggleOrderEvent = viewModel::onEvent,
+                onExpenseOrderChangeEvent = viewModel::onEvent,
+                orderSectionVisible = state.value.orderSectionVisible,
+                expenseOrder = state.value.order,
+            )
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-//                .padding(paddingValues)
+                .padding(paddingValues)
         ) {
 
-            LazyColumn(contentPadding = paddingValues) {
-                item {
-                    TopBarOrder(
-                        onToggleOrderEvent = viewModel::onEvent,
-                        onExpenseOrderChangeEvent = viewModel::onEvent,
-                        orderSectionVisible = state.value.orderSectionVisible,
-                        expenseOrder = state.value.order,
-                    )
-                }
+            LazyColumn {
+//                item {
+//
+//                }
                 if (state.value.expensesCat.isEmpty()) {
                     item {
                         Box(
