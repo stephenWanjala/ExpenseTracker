@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContent
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +33,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RootNavGraph(start = true)
 @Destination
 @Composable
@@ -60,12 +60,20 @@ fun DayWeekSummaryExpenseScreen(
             }
         },
         topBar = {
+//            CenterAlignedTopAppBar(
+//                title = {
+//                    Text(
+//                        text = "Expenses",
+//                        style = MaterialTheme.typography.headlineSmall
+//                    )
+//                },
+//            )
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+//                .padding(paddingValues)
         ) {
 
             LazyColumn(contentPadding = paddingValues) {
@@ -79,12 +87,13 @@ fun DayWeekSummaryExpenseScreen(
                     MonthlyCategoryExpenditure(
                         modifier = Modifier.padding(8.dp),
                         categories = state.value.categories,
-                        expenseSummaries = state.value.expenses,
+                        expenses = state.value.monthlyExpenses,
                         preselectedCategory= preselectedCategory,
                         onCategorySelected = { category ->
-
+                            viewModel.onEvent(ExpenseEvent.SelectCategory(category.name))
                         },
                         onDateSelected = { year, month, dayOfMonth ->
+                            viewModel.onEvent(ExpenseEvent.SelectDate(year, month, dayOfMonth))
                         },
                         defaultSelectedDate = state.value.selectedDate
                     )

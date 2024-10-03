@@ -23,6 +23,13 @@ fun ExpenseDatePicker(
     val calendar = Calendar.getInstance().apply {
         set(defaultSelectedDate.year, defaultSelectedDate.monthValue - 1, defaultSelectedDate.dayOfMonth)
     }
+    LaunchedEffect(Unit) {
+        onSelectDate(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
 
     val datePickerDialog = DatePickerDialog(
         LocalContext.current,
@@ -42,8 +49,6 @@ fun ExpenseDatePicker(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        Text(text = "Selected Date")
-//        Spacer(modifier = Modifier.height(2.dp))
         TextButton(onClick = { datePickerDialog.show() }) {
             Text(text = if (selectedDate.isEmpty()) "Select Date" else selectedDate)
         }

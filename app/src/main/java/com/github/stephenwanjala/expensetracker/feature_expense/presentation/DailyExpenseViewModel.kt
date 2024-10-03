@@ -10,7 +10,9 @@ import com.github.stephenwanjala.expensetracker.feature_expense.presentation.exp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,10 +26,30 @@ class DailyExpenseViewModel @Inject constructor(
     private val _state = MutableStateFlow(CategoryExpenseState())
     val state =
         _state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(500), CategoryExpenseState())
-
     init {
         getExpenses(ExpenseOrder.Date(OrderType.Descending))
-        getCategories()
+        viewModelScope.launch {
+            combine(
+                expenseScreenUseCase.getCategories(),
+                expenseScreenUseCase.expenses()
+            ) { categories, expenses ->
+                _state.update {
+                    val selectedCategory = categories.getOrNull(0)?.name ?: ""
+                    it.copy(
+                        expenses = expenses,
+                        categories = categories,
+                        selectedCategory = selectedCategory
+                    ).also {
+                        println("Selected category: $selectedCategory")
+                        filterMonthlyExpenses(
+                            it.selectedDate,
+                            selectedCategory
+                        )
+                    }
+                }
+
+            }.collect()
+        }
     }
 
     fun onEvent(event: ExpenseEvent) {
@@ -36,19 +58,42 @@ class DailyExpenseViewModel @Inject constructor(
                 if (event.expenseOrder::class == state.value.order::class &&
                     state.value.order.orderType == event.expenseOrder.orderType
                 ) return
-                _state.update { it.copy(order = event.expenseOrder) }
-                getExpenses(event.expenseOrder)
+                _state.update {
+                    it.copy(order = event.expenseOrder).also { getExpenses(event.expenseOrder) }
+                }
+
             }
 
             is ExpenseEvent.ToggleOrderSection -> _state.update { it.copy(orderSectionVisible = !it.orderSectionVisible) }
-            is ExpenseEvent.SelectCategory -> _state.update { it.copy(selectedCategory = event.category) }
-            is ExpenseEvent.SelectDate -> _state.update {
-                it.copy(
-                    selectedDate = LocalDate.of(
+
+            is ExpenseEvent.SelectCategory -> {
+                _state.update {
+                    it.copy(selectedCategory = event.category).also {
+                        filterMonthlyExpenses(
+                            it.selectedDate,
+                            event.category
+                        )
+                    }
+                }
+            }
+
+            is ExpenseEvent.SelectDate -> {
+                _state.update {
+                    it.copy(
+                        selectedDate = LocalDate.of(
+                            event.year,
+                            event.month + 1,
+                            event.dayOfMonth
+                        )
+                    )
+                }
+                filterMonthlyExpenses(
+                    LocalDate.of(
                         event.year,
                         event.month + 1,
                         event.dayOfMonth
-                    )
+                    ),
+                    state.value.selectedCategory
                 )
             }
         }
@@ -56,23 +101,21 @@ class DailyExpenseViewModel @Inject constructor(
 
     private fun getExpenses(expenseOrder: ExpenseOrder) {
         viewModelScope.launch {
-
             expenseScreenUseCase.categoryDailyExpense(expenseOrder).collectLatest { expenses ->
                 _state.update { it.copy(expensesCat = expenses, order = expenseOrder) }
-            }
-        }
-
-    }
-
-    private fun getCategories() {
-        viewModelScope.launch {
-            expenseScreenUseCase.getCategories().collectLatest { categories ->
-                _state.update { it.copy(categories = categories) }
-                if (categories.isNotEmpty()) {
-                    _state.update { it.copy(selectedCategory = categories[0].name) }
-                }
+                println("Expenses $expenses")
             }
         }
     }
 
+    /*  when selected date or category changes filter the expenses(state.value.expenses)
+    in that category and date (month and year) and update the state.monthlyExpenses state */
+    private fun filterMonthlyExpenses(date: LocalDate, category: String) {
+        val monthlyExpenses = _state.value.expenses.filter {
+            date == it.date.toLocalDate() &&
+                    it.category.name == category
+        }
+        _state.update { it.copy(monthlyExpenses = monthlyExpenses) }
+        println("Filtered monthly expenses: $monthlyExpenses")
+    }
 }

@@ -30,6 +30,9 @@ fun Spinner(
     var selected by remember { mutableStateOf(preselected) }
     var expanded by remember { mutableStateOf(false) } // initial value
 
+    LaunchedEffect(Unit) {
+        onSelectionChanged(selected)
+    }
 
 
     Card(
