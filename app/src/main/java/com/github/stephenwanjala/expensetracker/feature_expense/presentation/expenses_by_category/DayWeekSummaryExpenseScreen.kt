@@ -27,11 +27,12 @@ import com.github.stephenwanjala.expensetracker.feature_expense.presentation.des
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.SummaryItem
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.TopBarOrder
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
-//@RootNavGraph()
-@Destination(start = true)
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun DayWeekSummaryExpenseScreen(
     viewModel: DailyExpenseViewModel = hiltViewModel(),
