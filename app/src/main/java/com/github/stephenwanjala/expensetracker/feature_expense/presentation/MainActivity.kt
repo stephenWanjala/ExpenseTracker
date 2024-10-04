@@ -169,8 +169,10 @@ fun BottomBar(
             NavigationBarItem(
                 selected = currentDestination == destination.direction,
                 onClick = {
-                    destinationsNavigator.navigate(destination.direction) {
-                        launchSingleTop = true
+                    if (currentDestination != destination.direction) {
+                        destinationsNavigator.navigate(destination.direction) {
+                            launchSingleTop = true
+                        }
                     }
                 },
                 icon = {

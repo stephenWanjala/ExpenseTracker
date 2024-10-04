@@ -9,11 +9,6 @@ import java.time.LocalDate
 
 data class CategoryExpenseState(
     val order: ExpenseOrder = ExpenseOrder.Date(OrderType.Descending),
-    val expenses: List<Expense> = emptyList(),
-    val monthlyExpenses: List<Expense> = emptyList(),
     val expensesCat: List<CategorizedDailyExpense> = emptyList(),
     val orderSectionVisible: Boolean = false,
-    val categories: List<Category> = emptyList(),
-    val selectedCategory: String = "",
-    val selectedDate: LocalDate = LocalDate.now(),
 )
