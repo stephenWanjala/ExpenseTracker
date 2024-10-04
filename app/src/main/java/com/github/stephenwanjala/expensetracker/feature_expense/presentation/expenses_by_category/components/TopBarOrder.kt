@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ fun TopBarOrder(
     orderSectionVisible: Boolean = false,
     onToggleOrderEvent: (ExpenseEvent) -> Unit,
     onExpenseOrderChangeEvent: (ExpenseEvent) -> Unit,
+    scrollBehaviour: TopAppBarScrollBehavior
 ) {
     Column(
         modifier = modifier
@@ -59,7 +61,8 @@ fun TopBarOrder(
                 }) {
                     Icon(imageVector = Icons.AutoMirrored.Filled.Sort, contentDescription = "Icon Sort")
                 }
-            }
+            },
+            scrollBehavior = scrollBehaviour
         )
         AnimatedVisibility(
             visible = orderSectionVisible,

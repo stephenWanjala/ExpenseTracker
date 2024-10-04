@@ -78,9 +78,9 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
-    implementation(libs.vico.compose)
-    implementation(libs.vico.compose.m3)
-    implementation(libs.vico.core)
+//    implementation(libs.vico.compose)
+//    implementation(libs.vico.compose.m3)
+//    implementation(libs.vico.core)
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.navigation.compose)
@@ -102,6 +102,10 @@ dependencies {
     ksp (libs.androidx.hilt.compiler)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    // https://mvnrepository.com/artifact/io.github.thechance101/chart
+    implementation (libs.chart)
+
 
 }
 

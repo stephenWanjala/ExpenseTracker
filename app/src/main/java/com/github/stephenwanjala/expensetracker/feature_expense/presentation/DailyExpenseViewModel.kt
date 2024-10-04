@@ -40,7 +40,6 @@ class DailyExpenseViewModel @Inject constructor(
                         categories = categories,
                         selectedCategory = selectedCategory
                     ).also {
-                        println("Selected category: $selectedCategory")
                         filterMonthlyExpenses(
                             it.selectedDate,
                             selectedCategory
@@ -103,13 +102,10 @@ class DailyExpenseViewModel @Inject constructor(
         viewModelScope.launch {
             expenseScreenUseCase.categoryDailyExpense(expenseOrder).collectLatest { expenses ->
                 _state.update { it.copy(expensesCat = expenses, order = expenseOrder) }
-                println("Expenses $expenses")
             }
         }
     }
 
-    /*  when selected date or category changes filter the expenses(state.value.expenses)
-    in that category and date (month and year) and update the state.monthlyExpenses state */
     private fun filterMonthlyExpenses(date: LocalDate, category: String) {
         val monthlyExpenses = _state.value.expenses.filter {
             date.year == it.date.toLocalDate().year &&
@@ -117,6 +113,5 @@ class DailyExpenseViewModel @Inject constructor(
                     it.category.name == category
         }
         _state.update { it.copy(monthlyExpenses = monthlyExpenses) }
-        println("Filtered monthly expenses: $monthlyExpenses")
     }
 }

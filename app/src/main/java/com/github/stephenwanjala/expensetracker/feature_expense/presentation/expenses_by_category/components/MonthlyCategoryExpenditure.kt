@@ -13,13 +13,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.model.Category
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.model.Expense
-import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
-import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
-import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
-import com.patrykandpatrick.vico.compose.chart.Chart
-import com.patrykandpatrick.vico.compose.chart.column.columnChart
-import com.patrykandpatrick.vico.core.component.shape.LineComponent
-import com.patrykandpatrick.vico.core.entry.entryModelOf
 import java.time.LocalDate
 
 @Composable
@@ -79,20 +72,7 @@ fun MonthlyCategoryExpenditure(
             day.toFloat() to amount.toFloat()
         }.toTypedArray()
 
-        val chartEntryModel = entryModelOf(*chartEntries)
 
-        Chart(
-            chart = columnChart(),
-            model = chartEntryModel,
-            startAxis = rememberStartAxis(),
-            bottomAxis = rememberBottomAxis(
-                label = axisLabelComponent(),
-                tick = LineComponent(color = MaterialTheme.colorScheme.primary.toArgb())
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-        )
 
     }
 

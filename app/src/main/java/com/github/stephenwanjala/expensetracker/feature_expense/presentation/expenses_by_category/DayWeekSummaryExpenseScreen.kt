@@ -4,25 +4,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.DailyExpenseViewModel
-import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.AddEditExpenseScreenDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.ExpensesDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.SummaryItem
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.TopBarOrder
@@ -39,6 +35,7 @@ fun DayWeekSummaryExpenseScreen(
     navigator: DestinationsNavigator,
 ) {
     val state = viewModel.state.collectAsState()
+    val scrollBehaviour = TopAppBarDefaults.pinnedScrollBehavior()
     state.value.categories.firstOrNull { it.name == state.value.selectedCategory }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -48,6 +45,7 @@ fun DayWeekSummaryExpenseScreen(
                 onExpenseOrderChangeEvent = viewModel::onEvent,
                 orderSectionVisible = state.value.orderSectionVisible,
                 expenseOrder = state.value.order,
+                scrollBehaviour = scrollBehaviour,
             )
         }
     ) { paddingValues ->
@@ -57,7 +55,7 @@ fun DayWeekSummaryExpenseScreen(
                 .padding(paddingValues)
         ) {
 
-            LazyColumn {
+            LazyColumn(modifier = Modifier.nestedScroll(scrollBehaviour.nestedScrollConnection)) {
                 if (state.value.expensesCat.isEmpty()) {
                     item {
                         Box(
