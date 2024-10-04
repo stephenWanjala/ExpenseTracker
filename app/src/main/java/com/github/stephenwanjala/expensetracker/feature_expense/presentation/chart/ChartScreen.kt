@@ -143,18 +143,18 @@ fun DailyExpenseChart(
     ) {
         BarChart(
             chartParameters = barParameters,
-            gridColor = Color.DarkGray,
+            gridColor = MaterialTheme.colorScheme.onSurfaceVariant,
             xAxisData = days,
             isShowGrid = true,
             animateChart = true,
             showGridWithSpacer = true,
             yAxisStyle = TextStyle(
                 fontSize = 14.sp,
-                color = Color.DarkGray,
+                color = MaterialTheme.colorScheme.onSurface,
             ),
             xAxisStyle = TextStyle(
                 fontSize = 14.sp,
-                color = Color.DarkGray,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.W400
             ),
             yAxisRange = 15,
@@ -165,21 +165,6 @@ fun DailyExpenseChart(
 
 
 
-// Group expenses by date and sum the amounts for each day
-fun getExpensesPerDay2(expenses: List<Expense>): Map<LocalDate, Double> {
-    return expenses.groupBy { it.date.toLocalDate() }
-        .mapValues { (_, dayExpenses) ->
-            dayExpenses.sumOf { it.amount }
-        }
-}
-
-// Get list of dates for x-axis labels, formatted as "20 Jun 2024"
-fun getDateLabels2(expensesByDay: Map<LocalDate, Double>): List<String> {
-    val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
-    return expensesByDay.keys
-        .sorted()
-        .map { it.format(formatter) } // Convert to string for axis labels
-}
 
 
 
@@ -221,7 +206,7 @@ fun MonthlyExpenseBarChart(expenses: List<Expense>) {
     ) {
         BarChart(
             chartParameters = barParameters,
-            gridColor = MaterialTheme.colorScheme.onSurface,
+            gridColor = MaterialTheme.colorScheme.onSurfaceVariant,
             xAxisData = months,
             isShowGrid = true,
             animateChart = true,

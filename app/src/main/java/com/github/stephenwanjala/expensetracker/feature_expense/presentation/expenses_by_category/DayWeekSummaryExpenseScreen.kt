@@ -36,7 +36,6 @@ fun DayWeekSummaryExpenseScreen(
 ) {
     val state = viewModel.state.collectAsState()
     val scrollBehaviour = TopAppBarDefaults.pinnedScrollBehavior()
-    state.value.categories.firstOrNull { it.name == state.value.selectedCategory }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
