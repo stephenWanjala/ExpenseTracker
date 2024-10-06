@@ -116,7 +116,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     ) { paddingValues ->
-                        val unUsedPaddingValue = paddingValues.calculateBottomPadding()
+                        val unUsedPaddingValues = paddingValues.calculateBottomPadding()
                         DestinationsNavHost(
                             navGraph = NavGraphs.root,
                             navController = navController,
