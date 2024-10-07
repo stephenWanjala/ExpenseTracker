@@ -19,6 +19,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          sdk-version: 35
+
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
         with:
@@ -34,12 +39,6 @@ jobs:
 
       - name: Decode Keystore file
         run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > ExpenseTracker.jks
-
-      - name: Install Android SDK and Build Tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lib32stdc++6 lib32z1
-          yes | sdkmanager "platforms;android-35" "build-tools;30.0.3"
 
       - name: Build Signed APK
         run: ./gradlew assembleRelease --stacktrace
@@ -57,13 +56,13 @@ jobs:
 
       - name: Zipalign the APK
         run: |
-          $ANDROID_HOME/build-tools/30.0.3/zipalign -v 4 \
+          ${ANDROID_HOME}/build-tools/35.0.0/zipalign -v 4 \
           app/build/outputs/apk/release/app-release-unsigned.apk \
           app/build/outputs/apk/release/app-release.apk
 
       - name: Verify APK
         run: |
-          $ANDROID_HOME/build-tools/30.0.3/apksigner verify \
+          ${ANDROID_HOME}/build-tools/35.0.0/apksigner verify \
           app/build/outputs/apk/release/app-release.apk
 
       - name: Create Release
