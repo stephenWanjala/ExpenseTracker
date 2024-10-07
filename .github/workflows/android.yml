@@ -32,13 +32,38 @@ jobs:
       - name: Set execution flag for gradlew
         run: chmod +x gradlew
 
-      - name: Build APK
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Decode Keystore file
+        run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > ExpenseTracker.jks
+
+      - name: Build Signed APK
+        run: ./gradlew assembleRelease --stacktrace
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Sign the APK
+        run: |
+          jarsigner -verbose -keystore ExpenseTracker.jks. \
+          -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+          -keypass ${{ secrets.KEY_PASSWORD }} \
+          app/build/outputs/apk/release/app-release-unsigned.apk ${{ secrets.KEY_ALIAS }}
+
+      - name: Zipalign the APK
+        run: |
+          $ANDROID_HOME/build-tools/30.0.3/zipalign -v 4 \
+          app/build/outputs/apk/release/app-release-unsigned.apk \
+          app/build/outputs/apk/release/app-release.apk
+
+      - name: Verify APK
+        run: |
+          $ANDROID_HOME/build-tools/30.0.3/apksigner verify \
+          app/build/outputs/apk/release/app-release.apk
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: app/build/outputs/apk/debug/app-debug.apk
+          files: app/build/outputs/apk/release/app-release.apk
           name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
