@@ -35,6 +35,12 @@ jobs:
       - name: Decode Keystore file
         run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > ExpenseTracker.jks
 
+      - name: Install Android SDK and Build Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lib32stdc++6 lib32z1
+          yes | sdkmanager "platforms;android-35" "build-tools;30.0.3"
+
       - name: Build Signed APK
         run: ./gradlew assembleRelease --stacktrace
         env:
