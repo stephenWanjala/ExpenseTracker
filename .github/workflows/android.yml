@@ -43,7 +43,7 @@ jobs:
           chmod 600 $HOME/ExpenseTracker.jks
           echo "KEYSTORE_FILE_PATH=$HOME/ExpenseTracker.jks" >> $GITHUB_ENV
 
-      - name: Build Signed APK
+      - name: Build APK
         run: ./gradlew assembleRelease --stacktrace
         env:
           KEYSTORE_FILE_PATH: ${{ env.KEYSTORE_FILE_PATH }}
@@ -51,10 +51,15 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
+      - name: Debug APK location
+        run: |
+          find . -name "*.apk" -type f
+          ls -la app/build/outputs/apk/release/
+
       - name: Zipalign the APK
         run: |
           ${ANDROID_HOME}/build-tools/35.0.0/zipalign -v 4 \
-          app/build/outputs/apk/release/app-release-unsigned.apk \
+          $(find . -name "*.apk" -type f | grep unsigned) \
           app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Sign APK with APK Signer
