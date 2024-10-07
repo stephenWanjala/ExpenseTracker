@@ -54,7 +54,12 @@ android {
         variant.outputs
             .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
             .forEach { output ->
-                val outputFileName = "app-${variant.name}.apk"
+                val outputFileName = if (variant.buildType.name == "release") {
+                    "app-release-unsigned.apk"
+                } else {
+                    "app-${variant.buildType.name}.apk"
+                }
+                println("Setting output file name to: $outputFileName")
                 output.outputFileName = outputFileName
             }
     }

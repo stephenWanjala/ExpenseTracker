@@ -58,8 +58,14 @@ jobs:
 
       - name: Zipalign the APK
         run: |
-          ${ANDROID_HOME}/build-tools/35.0.0/zipalign -v 4 \
-          $(find . -name "*.apk" -type f | grep unsigned) \
+          UNSIGNED_APK=$(find . -name "app-release-unsigned.apk" -type f)
+          if [ -z "$UNSIGNED_APK" ]; then
+            echo "Unsigned APK not found"
+            exit 1
+          fi
+          echo "Found unsigned APK at: $UNSIGNED_APK"
+          ${ANDROID_HOME}/build-tools/35.0.0/zipalign -f -v 4 \
+          "$UNSIGNED_APK" \
           app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Sign APK with APK Signer
