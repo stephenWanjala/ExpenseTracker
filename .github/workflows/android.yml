@@ -37,33 +37,43 @@ jobs:
       - name: Set execution flag for gradlew
         run: chmod +x gradlew
 
-      - name: Decode Keystore file
-        run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > ExpenseTracker.jks
+      - name: Setup keystore file
+        run: |
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > $HOME/ExpenseTracker.jks
+          chmod 600 $HOME/ExpenseTracker.jks
+          echo "KEYSTORE_FILE_PATH=$HOME/ExpenseTracker.jks" >> $GITHUB_ENV
 
       - name: Build Signed APK
         run: ./gradlew assembleRelease --stacktrace
         env:
+          KEYSTORE_FILE_PATH: ${{ env.KEYSTORE_FILE_PATH }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-
-      - name: Sign the APK
-        run: |
-          jarsigner -verbose -keystore ExpenseTracker.jks \
-          -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
-          -keypass ${{ secrets.KEY_PASSWORD }} \
-          app/build/outputs/apk/release/app-release-unsigned.apk ${{ secrets.KEY_ALIAS }}
 
       - name: Zipalign the APK
         run: |
           ${ANDROID_HOME}/build-tools/35.0.0/zipalign -v 4 \
           app/build/outputs/apk/release/app-release-unsigned.apk \
-          app/build/outputs/apk/release/app-release.apk
+          app/build/outputs/apk/release/app-release-aligned.apk
+
+      - name: Sign APK with APK Signer
+        run: |
+          ${ANDROID_HOME}/build-tools/35.0.0/apksigner sign \
+          --ks ${{ env.KEYSTORE_FILE_PATH }} \
+          --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
+          --ks-key-alias ${{ secrets.KEY_ALIAS }} \
+          --key-pass pass:${{ secrets.KEY_PASSWORD }} \
+          --v1-signing-enabled true \
+          --v2-signing-enabled true \
+          --v3-signing-enabled true \
+          --v4-signing-enabled true \
+          --out app/build/outputs/apk/release/app-release.apk \
+          app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Verify APK
         run: |
-          ${ANDROID_HOME}/build-tools/35.0.0/apksigner verify \
-          app/build/outputs/apk/release/app-release.apk
+          ${ANDROID_HOME}/build-tools/35.0.0/apksigner verify --verbose app/build/outputs/apk/release/app-release.apk
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
