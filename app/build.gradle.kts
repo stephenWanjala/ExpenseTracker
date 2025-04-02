@@ -1,11 +1,12 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlinAndroid)
-    id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt.gralde.plugin)
+    alias(libs.plugins.kotlin.ksp)
     id ("kotlin-parcelize")
-    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -134,6 +135,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.github.thechance101/chart
     implementation (libs.chart)
+    implementation (libs.bundles.serialization)
 
 
 }
