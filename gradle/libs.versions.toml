@@ -17,7 +17,7 @@ activity-compose = "1.10.1"
 compose-bom = "2025.03.01"
 materialIconsCore = "1.7.8"
 navVersion = "2.8.9"
-ksp="2.1.10-1.0.29"
+ksp="2.1.20-1.0.32"
 ktor="3.0.3"
 
 
