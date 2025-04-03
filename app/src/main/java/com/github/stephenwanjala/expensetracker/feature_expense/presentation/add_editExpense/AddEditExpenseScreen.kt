@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
@@ -21,19 +20,16 @@ import com.github.stephenwanjala.expensetracker.feature_expense.presentation.add
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.add_editExpense.components.ExpenseCategories
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.add_editExpense.components.ExpenseDescription
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.add_editExpense.components.ExpenseTittle
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 
-@Destination
 @Composable
 fun AddEditExpenseScreen(
-    navigator: DestinationsNavigator,
+    onNavigateUp: () -> Unit,
     viewModel: AddEditExpenseViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-        AddExpenseAppBar(closePage = { navigator.popBackStack() })
+        AddExpenseAppBar(closePage = onNavigateUp)
     }) { paddingValues ->
         Column(
             modifier = Modifier
@@ -61,7 +57,7 @@ fun AddEditExpenseScreen(
                 enabled = state.value.saveButtonEnabled,
                 onclick = {
                     viewModel.onEvent(AddEditExpenseEvent.SaveExpense)
-                    navigator.popBackStack()
+                    onNavigateUp()
                 })
         }
     }
