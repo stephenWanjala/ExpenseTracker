@@ -3,7 +3,6 @@ agp = "8.9.1"
 androidx-hiltCompiler = "1.2.0"
 chart = "Beta-0.0.5"
 coroutinesVersion = "1.10.1"
-destinationsVersion = "1.11.7"
 desugar_jdk_libs = "2.1.5"
 hiltCompiler = "2.55"
 hiltNavigationCompose = "1.2.0"
@@ -35,8 +34,6 @@ androidx-material-icons-core = { module = "androidx.compose.material:material-ic
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsCore" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navVersion" }
 chart = { module = "io.github.thechance101:chart", version.ref = "chart" }
-destinations-animations-core = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "destinationsVersion" }
-destinations-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "destinationsVersion" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltCompiler" }
@@ -47,7 +44,6 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutinesVersion" }
 kotlin-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "destinationsVersion" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }

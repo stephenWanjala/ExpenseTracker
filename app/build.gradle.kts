@@ -119,9 +119,6 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    implementation(libs.destinations.core)
-    implementation(libs.destinations.animations.core)
-    ksp(libs.ksp)
 
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation (libs.androidx.lifecycle.viewmodel.compose)

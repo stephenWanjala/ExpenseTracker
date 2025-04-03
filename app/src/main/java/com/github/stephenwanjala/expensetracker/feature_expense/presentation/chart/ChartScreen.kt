@@ -2,7 +2,6 @@ package com.github.stephenwanjala.expensetracker.feature_expense.presentation.ch
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,17 +29,12 @@ import com.aay.compose.barChart.model.BarParameters
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.model.Category
 import com.github.stephenwanjala.expensetracker.feature_expense.domain.model.Expense
 import com.github.stephenwanjala.expensetracker.ui.theme.ExpenseTrackerTheme
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-@Destination
 fun ChartScreen(
-    navigator: DestinationsNavigator,
     viewModel: ChartScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
@@ -162,14 +156,6 @@ fun DailyExpenseChart(
         )
     }
 }
-
-
-
-
-
-
-
-
 
 
 @Composable

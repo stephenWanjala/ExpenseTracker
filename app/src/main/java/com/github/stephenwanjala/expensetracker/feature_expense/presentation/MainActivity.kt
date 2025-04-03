@@ -5,21 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.BarChart
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -28,27 +18,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.github.stephenwanjala.expensetracker.R
-import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.AddEditExpenseScreenDestination
-import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.ChartScreenDestination
-import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.DayWeekSummaryExpenseScreenDestination
-import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.Destination
+import androidx.navigation.compose.rememberNavController
+import com.github.stephenwanjala.expensetracker.feature_expense.navigation.ExpenseNavHost
+import com.github.stephenwanjala.expensetracker.feature_expense.navigation.TopLevelDestinations
 import com.github.stephenwanjala.expensetracker.ui.theme.ExpenseTrackerTheme
-import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
-import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
-import com.ramcosta.composedestinations.utils.toDestinationsNavigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -70,58 +55,43 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navHostEngine = rememberAnimatedNavHostEngine(
-                        navHostContentAlignment = Alignment.TopCenter,
-                        rootDefaultAnimations = RootNavGraphDefaultAnimations(
-                            enterTransition = {
-                                scaleIn(transformOrigin = TransformOrigin.Center)
-                            },
-                            exitTransition = {
-                                scaleOut(transformOrigin = TransformOrigin.Center)
-                            }
-                        )
+                    val navController = rememberNavController()
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentDestination: NavDestination? = navBackStackEntry?.destination
+
+                    val showBottomNav =
+                        TopLevelDestinations.entries.map { it.direction::class }.any { route ->
+
+                            currentDestination?.hierarchy?.any {
+                                it.hasRoute(route)
+                            } == true
+                        }
+                    val destinationItems = listOf(
+                        TopLevelDestinations.Home,
+                        TopLevelDestinations.Chart
                     )
-                    val navController = navHostEngine.rememberNavController()
-                    val currentDestination =
-                        navController.currentBackStackEntryAsState().value?.destination
-                    navController.currentBackStackEntryAsState().value?.destination
-                    val bottomBarItems: List<BottomBarDestination> = listOf(
-                        BottomBarDestination.Home,
-                        BottomBarDestination.GRAPH,
-                    )
-                    val showBottomBar = currentDestination?.route in listOf(
-                        BottomBarDestination.Home.direction.route,
-                        BottomBarDestination.GRAPH.direction.route,
-                    )
+                    val selectedItemIndex = rememberSaveable { mutableIntStateOf(0) }
+
+
                     Scaffold(
                         bottomBar = {
-                            AnimatedVisibility(visible = showBottomBar) {
-                                BottomBar(navController = navController, items = bottomBarItems)
+                            AnimatedVisibility(visible = showBottomNav) {
+                                BottomBar(
+                                    navController = navController,
+                                    items = destinationItems,
+                                    selectedItemIndex = selectedItemIndex.intValue,
+                                    onClick = { index ->
+                                        selectedItemIndex.intValue = index
+                                    })
                             }
                         },
-                        floatingActionButton = {
-                            if (currentDestination?.route == DayWeekSummaryExpenseScreenDestination.route) {
-                                FloatingActionButton(
-                                    onClick = {
-                                        navController.toDestinationsNavigator()
-                                            .navigate(AddEditExpenseScreenDestination)
-                                    },
-                                    modifier = Modifier.navigationBarsPadding()
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Add,
-                                        contentDescription = "Add Expense"
-                                    )
-                                }
-                            }
-                        }
                     ) { paddingValues ->
-                        val unUsedPaddingValues = paddingValues.calculateBottomPadding()
-                        DestinationsNavHost(
-                            navGraph = NavGraphs.root,
-                            navController = navController,
-                            engine = navHostEngine,
-//                            modifier = Modifier.padding(paddingValues),
+                        paddingValues.calculateBottomPadding()
+                        ExpenseNavHost(
+                            navHostController = navController,
+                            modifier = Modifier
+                                .padding(paddingValues)
+                                .consumeWindowInsets(paddingValues)
                         )
 
 
@@ -135,50 +105,29 @@ class MainActivity : ComponentActivity() {
 }
 
 
-enum class BottomBarDestination(
-    val direction: DirectionDestinationSpec,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    @StringRes val label: Int
-) {
-    Home(
-        DayWeekSummaryExpenseScreenDestination,
-        Icons.Filled.Home,
-        Icons.Outlined.Home,
-        R.string.home
-    ),
-
-    //
-    GRAPH(
-        ChartScreenDestination,
-        Icons.Filled.BarChart,
-        Icons.Outlined.BarChart,
-        R.string.graph
-    )
-}
-
 @Composable
 fun BottomBar(
     navController: NavController,
-    items: List<BottomBarDestination>
+    items: List<TopLevelDestinations>,
+    selectedItemIndex: Int = 0,
+    onClick: (Int) -> Unit
 ) {
-    val currentDestination: Destination = navController.appCurrentDestinationAsState().value
-        ?: NavGraphs.root.startAppDestination
-    val destinationsNavigator: DestinationsNavigator = navController.toDestinationsNavigator()
+
     NavigationBar {
-        items.forEach { destination ->
+        items.forEachIndexed { index, destination ->
             NavigationBarItem(
-                selected = currentDestination == destination.direction,
+                selected = selectedItemIndex == index,
                 onClick = {
-                    if (currentDestination != destination.direction) {
-                        destinationsNavigator.navigate(destination.direction) {
+                    if (selectedItemIndex != index) {
+                        onClick(index)
+                        navController.navigate(destination.direction) {
                             launchSingleTop = true
                         }
                     }
                 },
                 icon = {
                     Icon(
-                        imageVector = if (currentDestination == destination.direction) destination.selectedIcon else destination.unselectedIcon,
+                        imageVector = if (selectedItemIndex == index) destination.selectedIcon else destination.unselectedIcon,
                         contentDescription = stringResource(destination.label)
                     )
                 },

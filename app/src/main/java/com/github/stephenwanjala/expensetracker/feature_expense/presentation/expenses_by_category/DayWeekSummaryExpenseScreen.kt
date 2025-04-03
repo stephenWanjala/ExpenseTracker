@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -18,21 +22,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.github.stephenwanjala.expensetracker.feature_expense.domain.useCase.CategorizedDailyExpense
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.DailyExpenseViewModel
-import com.github.stephenwanjala.expensetracker.feature_expense.presentation.destinations.ExpensesDestination
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.SummaryItem
 import com.github.stephenwanjala.expensetracker.feature_expense.presentation.expenses_by_category.components.TopBarOrder
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RootNavGraph(start = true)
-@Destination
+
 @Composable
 fun DayWeekSummaryExpenseScreen(
     viewModel: DailyExpenseViewModel = hiltViewModel(),
-    navigator: DestinationsNavigator,
+    onSummaryClick: (CategorizedDailyExpense) -> Unit,
+    addNewExpense:()-> Unit
 ) {
     val state = viewModel.state.collectAsState()
     val scrollBehaviour = TopAppBarDefaults.pinnedScrollBehavior()
@@ -46,6 +48,17 @@ fun DayWeekSummaryExpenseScreen(
                 expenseOrder = state.value.order,
                 scrollBehaviour = scrollBehaviour,
             )
+        }, floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                 addNewExpense()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Expense"
+                )
+            }
         }
     ) { paddingValues ->
         Column(
@@ -69,9 +82,10 @@ fun DayWeekSummaryExpenseScreen(
                     }
                 }
                 items(state.value.expensesCat) { categorizedDailyExpense ->
-                    SummaryItem(expenseCat = categorizedDailyExpense, onSummaryClick = {
-                        navigator.navigate(ExpensesDestination(expenseCat = it))
-                    })
+                    SummaryItem(
+                        expenseCat = categorizedDailyExpense,
+                        onSummaryClick = onSummaryClick
+                    )
                 }
             }
         }

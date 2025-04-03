@@ -11,7 +11,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class GetCategorizedDailyExpense(private val repository: ExpenseRepository) {
     operator fun invoke(expenseOrder: ExpenseOrder = ExpenseOrder.Date(OrderType.Descending)): Flow<List<CategorizedDailyExpense>> {
@@ -72,3 +80,20 @@ data class CategorizedDailyExpense(
     val amount: Double,
     val dayOfWeek: Int,
 ) : Parcelable
+
+@OptIn(ExperimentalSerializationApi::class)
+object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
+    private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("LocalDateTime", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: LocalDateTime) {
+        encoder.encodeString(value.format(formatter))
+    }
+
+    override fun deserialize(decoder: Decoder): LocalDateTime {
+        val string = decoder.decodeString()
+        return LocalDateTime.parse(string, formatter)
+    }
+}
