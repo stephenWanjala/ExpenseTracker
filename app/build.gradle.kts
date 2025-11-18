@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "com.github.stephenwanjala.expensetracker"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.github.stephenwanjala.expensetracker"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0.5"
 
